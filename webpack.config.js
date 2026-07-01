@@ -25,6 +25,10 @@ module.exports = (env, argv) => {
           test: /\.(jpg|jpeg|png|svg|webp|gif)$/i,
           type: "asset/resource",
         },
+        {
+          test: /\.html$/i,
+          loader: "html-loader",
+        },
       ],
     },
 
