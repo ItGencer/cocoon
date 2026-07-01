@@ -936,3 +936,131 @@ body {
     flex-shrink: 0;
   }
 }
+
+.our-story {
+  padding: 120px 0;
+
+  &__container {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 80px;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 40px;
+  }
+
+  // --- ліва колонка ---
+  &__intro {
+    position: sticky;
+    top: 120px; // ⚠️ підстав реальну висоту хедера + відступ
+    align-self: start;
+  }
+
+  &__badge {
+    display: inline-block;
+    padding: 6px 14px;
+    margin-bottom: 24px;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 999px;
+    font-size: 13px;
+    color: #9a9a9a;
+  }
+
+  &__title {
+    margin-bottom: 20px;
+    font-size: 40px;
+    font-weight: 800;
+    line-height: 1.15;
+    color: #ffffff;
+  }
+
+  &__description {
+    max-width: 380px;
+    color: #9a9a9a;
+    font-size: 16px;
+    line-height: 1.6;
+  }
+
+  // --- права колонка (таймлайн) ---
+  // grid з 2 колонок: 1-ша — точка (24px), 2-га — картка (решта простору).
+  // кожен запис таймлайну — це пара елементів (dot-wrap + item) підряд у розмітці,
+  // grid сам розкладає їх по одному рядку.
+  &__timeline {
+    position: relative;
+    display: grid;
+    grid-template-columns: 24px 1fr; // ⚠️ підлаштуй ширину точкової колонки під свій дизайн
+    column-gap: 20px;
+    row-gap: 16px;
+
+    // суцільна вертикальна лінія позаду точок (замість "нарізаної" лінії в кожній картці)
+    &::before {
+      content: "";
+      position: absolute;
+      top: 9px;    // приблизно половина висоти точки — щоб лінія починалась від її центру
+      bottom: 9px;
+      left: 11px;  // центр 24px-колонки (24px / 2 - ширина лінії / 2)
+      width: 1px;
+      background: rgba(255, 255, 255, 0.15);
+    }
+  }
+
+  // колонка 1: обгортка точки
+  &__dot-wrap {
+    position: relative;
+    z-index: 1; // щоб точка перекривала лінію під собою
+    display: flex;
+    justify-content: center;
+    padding-top: 4px;
+  }
+
+  &__dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: transparent;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    transition: background 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
+
+    &--active {
+      background: #ffffff;
+      border-color: #ffffff;
+      box-shadow: 0 0 0 6px rgba(255, 255, 255, 0.12);
+    }
+  }
+
+  // колонка 2: картка
+  &__item {
+    padding: 20px 24px;
+    background: #141414;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgb(135 39 39 / 66%);
+    transition: border-color 0.25s ease, box-shadow 0.25s ease;
+    cursor: pointer;
+
+    &:hover {
+      border-color: rgba(255, 255, 255, 0.25);
+      box-shadow: 0 12px 32px rgba(0, 0, 0, 0.4);
+    }
+  }
+
+  &__year {
+    display: block;
+    margin-bottom: 8px;
+    font-size: 13px;
+    color: #9a9a9a;
+  }
+
+  &__item-title {
+    margin-bottom: 8px;
+    font-size: 18px;
+    font-weight: 700;
+    color: #ffffff;
+  }
+
+  &__item-text {
+    font-size: 14px;
+    line-height: 1.6;
+    color: #9a9a9a;
+  }
+}

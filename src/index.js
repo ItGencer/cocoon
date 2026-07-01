@@ -97,3 +97,100 @@ window.addEventListener('resize', onScrollOrResize);
 
 updateTeamBgWidth();
 updateHeroBgWidth();
+
+
+const storyData = [
+  {
+    year: 2026,
+    title: "AI-native from day one",
+    text: "Every engagement now starts with AI-assisted discovery. We cut diagnostic time in half and deliver prototypes in weeks, not months.",
+  },
+  {
+    year: 2025,
+    title: "First enterprise clients",
+    text: "Word spread. Two Fortune 500 companies brought us in to untangle cross-departmental workflows that had stalled for years.",
+  },
+  {
+    year: 2024,
+    title: "Cocoon is founded",
+    text: "Lisa and Sarah leave their roles to build the consultancy they always wished existed. First client within three weeks — a logistics company bleeding money on manual processes.",
+  },
+  {
+    year: 2022,
+    title: "The frustration crystallizes",
+    text: "Both independently hit the same wall: brilliant consultants who delivered decks, not outcomes. They start talking about what \"consulting that actually ships\" would look like.",
+  },
+  {
+    year: 2018,
+    title: "Lisa and Sarah meet",
+    text: "A conference talk on developer experience sparks a conversation that never really ends. Different worlds — infrastructure and strategy — but the same conviction: build for users, not for org charts.",
+  },
+];
+
+function setActiveStoryItem(container, activeEl) {
+  container
+    .querySelectorAll(".our-story__item--active")
+    .forEach((el) => el.classList.remove("our-story__item--active"));
+  activeEl.classList.add("our-story__item--active");
+}
+
+
+function setActiveDot(container, dotEl) {
+  container
+    .querySelectorAll(".our-story__dot--active")
+    .forEach((el) => el.classList.remove("our-story__dot--active"));
+  dotEl.classList.add("our-story__dot--active");
+}
+
+function initOurStory() {
+  const container = document.querySelector("[data-story-timeline]");
+  if (!container) return;
+
+  let firstDot = null;
+
+  storyData.forEach((item, index) => {
+    // колонка 1: точка
+    const dotWrap = document.createElement("div");
+    dotWrap.className = "our-story__dot-wrap";
+    const dot = document.createElement("span");
+    dot.className = "our-story__dot";
+    if (index === 0) {
+      dot.classList.add("our-story__dot--active"); // 2026 активний за замовчуванням
+      firstDot = dot;
+    }
+    dotWrap.appendChild(dot);
+
+    // колонка 2: картка
+    const itemEl = document.createElement("div");
+    const itemElSpan = document.createElement("span");
+    const itemElContent = document.createElement("div");
+    const itemEltext = document.createElement("div");
+    itemEl.className = "our-story__item";
+    
+    itemElSpan.className = "our-story__year";
+    itemElSpan.textContent = item.year;
+    
+    itemElContent.className = "our-story__item-content";
+    itemElContent.textContent = item.title;
+
+    itemEltext.className = "our-story__item-text";
+    itemEltext.textContent = item.text;
+
+    itemEl.appendChild(itemElSpan);
+    itemEl.appendChild(itemElContent);
+    itemElContent.appendChild(itemEltext);
+
+    // наведення на картку підсвічує "свою" точку (замикання на dot з цієї ітерації)
+    itemEl.addEventListener("mouseenter", () => setActiveDot(container, dot));
+
+    container.appendChild(dotWrap);
+    container.appendChild(itemEl);
+  });
+
+  // миша пішла з усього таймлайну — повертаємось до 2026
+  container.addEventListener("mouseleave", () => {
+    if (firstDot) setActiveDot(container, firstDot);
+  });
+}
+
+initOurStory();
