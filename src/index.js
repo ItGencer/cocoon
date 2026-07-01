@@ -81,17 +81,6 @@ function updateHeroBgWidth() {
   heroBg.style.maxWidth = `${targetWidth}px`;
 }
 
-let ticking = false;
-function onScrollOrResize() {
-  if (ticking) return;
-  ticking = true;
-  requestAnimationFrame(() => {
-    updateHeroBgWidth();
-    updateTeamBgWidth(); // ← додаємо
-    ticking = false;
-  });
-}
-
 window.addEventListener('scroll', onScrollOrResize, { passive: true });
 window.addEventListener('resize', onScrollOrResize);
 
@@ -194,3 +183,69 @@ function initOurStory() {
 }
 
 initOurStory();
+
+
+// ─── Pricing bg scroll ───────────────────────────────────
+const pricingBg = document.querySelector('[data-pricing-bg]');
+const pricing   = document.querySelector('.pricing');
+
+function updatePricingBgWidth() {
+  if (!pricingBg || !pricing) return;
+
+  const windowWidth = window.innerWidth;
+
+  if (windowWidth < BREAKPOINT) {
+    pricingBg.style.maxWidth = '';
+    return;
+  }
+
+  const rect = pricing.getBoundingClientRect();
+
+  const progress = Math.min(
+    Math.max(
+      (window.innerHeight - rect.top) / (window.innerHeight + rect.height),
+      0
+    ),
+    1
+  );
+
+  const targetWidth = MIN_WIDTH + (windowWidth - MIN_WIDTH) * progress;
+  pricingBg.style.maxWidth = `${targetWidth}px`;
+}
+
+
+    updatePricingBgWidth();
+
+
+    
+let ticking = false;
+function onScrollOrResize() {
+  if (ticking) return;
+  ticking = true;
+  requestAnimationFrame(() => {
+    updateHeroBgWidth();
+    updateTeamBgWidth();
+    updatePricingBgWidth();
+    ticking = false;
+  });
+}
+
+
+
+// ─── Contact form ────────────────────────────────────────
+const contactForm = document.querySelector('[data-contact-form]');
+
+if (contactForm) {
+  contactForm.addEventListener('submit', (e) => {
+    e.preventDefault();
+
+    const data = Object.fromEntries(new FormData(contactForm));
+    console.log('Contact form submitted:', data);
+
+    // TODO: тут заміни на реальний запит до бекенду / сервісу форм
+    // fetch('/api/contact', { method: 'POST', body: JSON.stringify(data), headers: {...} })
+
+    contactForm.reset();
+    alert('Дякуємо! Ми зв\'яжемось з вами найближчим часом.');
+  });
+}
