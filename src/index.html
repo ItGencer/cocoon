@@ -6,8 +6,176 @@
     <title>Cocoon</title>
   </head>
   <body>
-    <header></header>
-    <main></main>
+    <header class="header">
+      <div class="header__inner">
+        <a href="#" class="header__logo logo">
+          <span class="logo__icon">
+            <svg
+              viewBox="0 0 32 20"
+              width="24"
+              height="24"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <circle
+                cx="12"
+                cy="10"
+                r="9"
+                stroke="currentColor"
+                stroke-width="1.5"
+              />
+              <circle
+                cx="20"
+                cy="10"
+                r="9"
+                stroke="currentColor"
+                stroke-width="1.5"
+              />
+            </svg>
+          </span>
+          <span class="logo__text">Cocoon</span>
+        </a>
+
+        <nav class="header__nav nav" data-nav>
+          <a href="#about" class="nav__link">About</a>
+          <a href="#approach" class="nav__link">Approach</a>
+          <a href="#team" class="nav__link">Team</a>
+          <a href="#pricing" class="nav__link">Pricing</a>
+          <a href="#contact" class="nav__link">Contact</a>
+          <a href="#contact" class="nav__cta btn btn--primary nav__cta--mobile"
+            >Talk to us</a
+          >
+        </nav>
+
+        <a
+          href="#contact"
+          class="header__cta btn btn--primary header__cta--desktop"
+          >Talk to us</a
+        >
+
+        <button
+          class="header__burger burger"
+          type="button"
+          aria-label="Open menu"
+          data-burger
+        >
+          <span class="burger__line"></span>
+          <span class="burger__line"></span>
+          <span class="burger__line"></span>
+        </button>
+      </div>
+    </header>
+    <main>
+      <section class="hero">
+  <div class="hero__container">
+    <span class="hero__badge">AI Consulting</span>
+
+    <h1 class="hero__title">
+      We find the problem.<br />
+      We build the fix. We<br />
+      prove it works.
+    </h1>
+
+    <p class="hero__text">
+      Cocoon is a two-person AI consultancy that goes deep into
+      organizations, identifies the real bottlenecks, and delivers working
+      solutions — not slide decks.
+    </p>
+  </div>
+  <div class="hero__bg" data-hero-bg>
+    <div class="hero__circles">
+      <div class="hero__circle hero__circle--left">
+        <span class="hero__circle-dot hero__circle-dot--cw"></span>
+      </div>
+      <div class="hero__circle hero__circle--right">
+        <span class="hero__circle-dot hero__circle-dot--ccw"></span>
+      </div>
+    </div>
+  </div>
+
+</section>
+
+<section class="about" id="about">
+  <div class="about__container">
+    <div class="about__header">
+      <h2 class="about__title">A new kind of<br />consulting</h2>
+      <div class="about__founders">
+        <img src="./assets/lisa.jpg" alt="Lisa Bergmann" class="about__avatar" />
+        <img src="./assets/sarah.jpg" alt="Sarah Chen" class="about__avatar" />
+      </div>
+    </div>
+
+    <div class="about__content">
+      <p class="about__lead">
+        Most consultants tell you what's wrong. We show you it's fixed.
+      </p>
+      <p class="about__text">
+        Cocoon was founded by Lisa Bergmann and Sarah Chen — a technologist
+        who thinks in products and a strategist who thinks in systems. Two
+        very different minds, united by a shared obsession: understanding
+        users and leveraging AI to solve real problems.
+      </p>
+      <p class="about__text">
+        We work across department lines. We quantify what others describe
+        with adjectives. And when we find the biggest lever, we don't hand
+        you a report — we build the solution, deploy it, and prove it works.
+        Then we hand it over.
+      </p>
+    </div>
+  </div>
+
+  <hr class="about__divider" />
+  <div class="about__grid">
+    <div class="about__grid-item">
+      <svg class="about__icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M12 4a8 8 0 1 1-5.657 2.343" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
+        <path d="M12 4v4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
+      </svg>
+      <span class="about__label">rurc</span>
+    </div>
+
+    <div class="about__grid-item">
+      <svg class="about__icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="12" cy="12" r="8" stroke="currentColor" stroke-width="1.5" />
+        <path d="M12 9v6M9 12h6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
+      </svg>
+      <span class="about__label">sol</span>
+    </div>
+
+    <div class="about__grid-item">
+      <svg class="about__icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M8 4l8 4v12l-8-4V4z" fill="currentColor" />
+      </svg>
+      <span class="about__label">nm</span>
+    </div>
+
+    <div class="about__grid-item">
+      <svg class="about__icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M12 5l7 14H5l7-14z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round" />
+      </svg>
+      <span class="about__label">nm</span>
+    </div>
+
+    <div class="about__grid-item">
+      <svg class="about__icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <rect x="4" y="4" width="6" height="6" fill="currentColor" />
+        <rect x="14" y="4" width="6" height="6" fill="currentColor" opacity="0.4" />
+        <rect x="4" y="14" width="6" height="6" fill="currentColor" opacity="0.4" />
+        <rect x="14" y="14" width="6" height="6" fill="currentColor" />
+      </svg>
+      <span class="about__label">uh</span>
+    </div>
+
+    <div class="about__grid-item">
+      <svg class="about__icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M3 12c2-4 4 4 6 0s4 4 6 0 4 4 6 0" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+      </svg>
+      <span class="about__label">wp</span>
+    </div>
+  </div>
+  <hr class="about__divider" />
+</section>
+    </main>
     <footer></footer>
   </body>
 </html>
