@@ -1,0 +1,114 @@
+@use "variables" as *;
+@use "mixins" as *;
+
+.about {
+  background-color: $color-bg;
+  border-top: 1px solid $color-border;
+
+  &__container {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 64px;
+    max-width: $container-max-width;
+    margin: 0 auto;
+    padding: 96px 32px;
+
+    @include mobile {
+      grid-template-columns: 1fr;
+      gap: 32px;
+      padding: 56px 20px;
+    }
+  }
+
+  &__title {
+    font-size: $fs-h2;
+    font-weight: $fw-extrabold;
+    line-height: $line-height-heading;
+    color: $color-text-primary;
+    margin: 0 0 24px;
+  }
+
+  &__founders {
+    display: flex;
+  }
+
+  &__avatar {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid $color-bg;
+
+    &:not(:first-child) { margin-left: -12px; }
+  }
+
+  &__lead {
+    font-size: 18px;
+    font-weight: $fw-bold;
+    color: $color-text-primary;
+    margin: 0 0 20px;
+    line-height: 1.4;
+  }
+
+  &__text {
+    font-size: $fs-body;
+    font-weight: $fw-regular;
+    color: $color-text-secondary;
+    line-height: $line-height-body;
+    margin: 0 0 16px;
+
+    &:last-child { margin-bottom: 0; }
+  }
+
+  &__grid {
+    max-width: 1300px;
+    width: 100%;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    border-top: 1px solid $color-border;
+
+    @include mobile {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  &__grid-item {
+    @include flex-center(row, 10px);
+    padding: 40px 24px;
+    border-right: 1px solid $color-border;
+    border-bottom: 1px solid $color-border;
+    color: $color-text-secondary;
+    transition: color $transition-base, background-color $transition-base;
+
+    &:nth-child(3n) { border-right: none; }
+
+    @include mobile {
+      &:nth-child(3n) { border-right: 1px solid $color-border; }
+      &:nth-child(2n) { border-right: none; }
+    }
+
+    &:hover {
+      color: $color-text-primary;
+      background-color: rgba(255, 255, 255, 0.03);
+    }
+  }
+
+  &__icon {
+    width: 20px;
+    height: 20px;
+    color: inherit;
+  }
+
+  &__label {
+    font-size: $fs-body;
+    font-weight: $fw-medium;
+  }
+
+  &__divider {
+    margin: 40px 0;
+    color: $color-text-secondary;
+    border: none;
+    border-top: 1px solid $color-border;
+  }
+}

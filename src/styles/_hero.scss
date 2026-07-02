@@ -1,0 +1,121 @@
+@use "variables" as *;
+@use "mixins" as *;
+
+.hero {
+  position: relative;
+  overflow: hidden;
+  padding-top: 160px;
+  padding-bottom: 80px;
+
+  &__bg {
+    position: relative;
+    z-index: 1;
+    margin: 64px auto 0;
+    width: 100%;
+    max-width: $scroll-bg-min-width;
+    height: 480px;
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.05) 0%, rgba($color-bg, 0) 100%);
+    border-radius: $radius-card;
+    overflow: hidden;
+    transition: max-width 0.1s linear;
+    @include flex-center;
+
+    @include tablet { max-width: 100%; }
+    @include mobile { height: 360px; margin-top: 40px; }
+  }
+
+  &__container {
+    position: relative;
+    z-index: 2;
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 0 $container-padding;
+  }
+
+  &__badge {
+    display: inline-block;
+    padding: 6px 14px;
+    margin-bottom: 32px;
+    font-size: 13px;
+    font-weight: $fw-medium;
+    color: $color-text-primary-soft;
+    background: $color-bg-card;
+    border: 1px solid $color-border-strong;
+    border-radius: 100px;
+  }
+
+  &__title {
+    margin: 0 0 24px;
+    font-size: $fs-h1;
+    font-weight: $fw-extrabold;
+    line-height: 1.1;
+    color: $color-text-primary;
+    letter-spacing: -0.01em;
+
+    @include mobile { font-size: 40px; }
+  }
+
+  &__text {
+    max-width: 560px;
+    margin: 0;
+    font-size: $fs-lead;
+    font-weight: $fw-regular;
+    line-height: $line-height-body;
+    color: $color-text-secondary;
+  }
+
+  &__circles {
+    position: relative;
+    z-index: 1;
+    @include flex-center;
+  }
+
+  &__circle {
+    position: relative;
+    width: 350px;
+    height: 350px;
+    border: 1px solid $color-border-strong;
+    border-radius: 50%;
+    flex-shrink: 0;
+
+    &--left { margin-right: -90px; }
+    &--right { margin-left: -90px; }
+
+    @include mobile {
+      width: 220px;
+      height: 220px;
+      &--left { margin-right: -55px; }
+      &--right { margin-left: -55px; }
+    }
+  }
+
+  &__circle-dot {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 8px;
+    height: 8px;
+    background: $color-text-primary;
+    border-radius: 50%;
+    box-shadow: 0 0 8px 2px rgba(255, 255, 255, 0.6);
+    offset-path: circle(#{circle-radius(350px)} at #{circle-radius(350px)} #{circle-radius(350px)});
+    offset-rotate: 0deg;
+
+    &--cw { animation: hero-orbit-cw 10s linear infinite; }
+    &--ccw { animation: hero-orbit-ccw 10s linear infinite; }
+
+    @include mobile {
+      offset-path: circle(#{circle-radius(220px)} at #{circle-radius(220px)} #{circle-radius(220px)});
+    }
+  }
+}
+
+@keyframes hero-orbit-cw {
+  from { offset-distance: 0%; }
+  to { offset-distance: 100%; }
+}
+
+@keyframes hero-orbit-ccw {
+  from { offset-distance: 100%; }
+  to { offset-distance: 0%; }
+}
