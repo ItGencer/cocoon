@@ -1,0 +1,171 @@
+@use "sass:math";
+@use "sass:color";
+@use "variables" as *;
+
+// ═══════════════════════════════════════════════════════
+// Media query mixins — замінюють повторювані `@media (max-width: …)`
+// ═══════════════════════════════════════════════════════
+
+@mixin mobile {
+  @media (max-width: $bp-mobile) {
+    @content;
+  }
+}
+
+@mixin tablet {
+  @media (max-width: $bp-tablet) {
+    @content;
+  }
+}
+
+// ═══════════════════════════════════════════════════════
+// Layout helpers
+// ═══════════════════════════════════════════════════════
+
+@mixin flex-center($direction: row, $gap: 0) {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: $direction;
+
+  @if $gap != 0 {
+    gap: $gap;
+  }
+}
+
+@mixin flex-col($gap: 0) {
+  display: flex;
+  flex-direction: column;
+
+  @if $gap != 0 {
+    gap: $gap;
+  }
+}
+
+// ═══════════════════════════════════════════════════════
+// Surfaces / cards
+// ═══════════════════════════════════════════════════════
+
+@mixin surface-card($bg: $color-bg-card, $border-color: $color-border, $radius: $radius-card) {
+  background: $bg;
+  border: 1px solid $border-color;
+  border-radius: $radius;
+}
+
+// Матове скло (widget cards, pricing cards тощо)
+@mixin glass-panel($bg, $blur: 12px, $border-color: $color-border-strong) {
+  background-color: $bg;
+  backdrop-filter: blur($blur);
+  border: 1px solid $border-color;
+}
+
+// ═══════════════════════════════════════════════════════
+// Color variants
+// ═══════════════════════════════════════════════════════
+
+// Бейдж "текст на затонованому фоні", напр. зелений "Healthy"
+@mixin badge-tone($color, $alpha: 0.15) {
+  color: $color;
+  background-color: rgba($color, $alpha);
+}
+
+// ═══════════════════════════════════════════════════════
+// Scroll-driven background image
+// Спільне для .hero__bg / .team__bg / .pricing__bg —
+// однакова коробкова модель, різниться лише ::after-градієнт
+// (див. scroll-bg-overlay нижче) і position (relative/absolute)
+// ═══════════════════════════════════════════════════════
+
+%scroll-bg-base {
+  margin: 0 auto;
+  width: 100%;
+  max-width: $scroll-bg-min-width;
+  border-radius: $radius-card;
+  transition: max-width 0.1s linear;
+  overflow: hidden;
+
+  @include tablet {
+    max-width: 100%;
+  }
+}
+
+// Варіант із фоновим зображенням (team / pricing) — position: absolute,
+// займає всю секцію (inset: 0) і на планшеті втрачає радіус
+%scroll-bg-image {
+  @extend %scroll-bg-base;
+  position: absolute;
+  inset: 0;
+  height: 100%;
+  background-image: url('../assets/floral.jpg');
+  background-size: cover;
+  background-position: center;
+
+  @include tablet {
+    border-radius: 0;
+  }
+}
+
+@mixin scroll-bg-overlay($gradient) {
+  &::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: $gradient;
+    border-radius: inherit;
+  }
+}
+
+// ═══════════════════════════════════════════════════════
+// Misc resets
+// ═══════════════════════════════════════════════════════
+
+%link-reset {
+  text-decoration: none;
+  color: inherit;
+}
+
+// Базовий вигляд для .btn--primary / *-btn, щоб не дублювати
+%pill-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: $color-btn-bg;
+  color: $color-btn-text;
+  padding: 10px 20px;
+  border-radius: $radius-pill;
+  font-weight: $fw-semibold;
+  font-size: 14px;
+  text-align: center;
+  border: none;
+  cursor: pointer;
+  transition: opacity $transition-base;
+
+  &:hover {
+    opacity: 0.85;
+  }
+}
+
+// Картка з тонким бордером + hover-підсвітка (about__grid-item тощо)
+%bordered-cell {
+  border-right: 1px solid $color-border;
+  border-bottom: 1px solid $color-border;
+  color: $color-text-secondary;
+  transition: color $transition-base, background-color $transition-base;
+
+  &:hover {
+    color: $color-text-primary;
+    background-color: rgba(255, 255, 255, 0.03);
+  }
+}
+
+// Половина розміру — хелпер для offset-path кіл (hero орбіти)
+@function circle-radius($diameter) {
+  @return math.div($diameter, 2);
+}
+
+// offset-path: circle(r at r r) для квадратного контейнера $size
+@mixin orbit-path($size) {
+  $r: circle-radius($size);
+  offset-path: circle(#{$r} at #{$r} #{$r});
+  offset-rotate: 0deg;
+}

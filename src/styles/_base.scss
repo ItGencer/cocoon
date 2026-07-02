@@ -1,0 +1,33 @@
+@use "variables" as *;
+@use "mixins" as *;
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+img {
+  width: 100%;
+  display: block;
+}
+
+html {
+  scroll-behavior: smooth;
+  font-size: 16px;
+  background: $color-bg;
+}
+
+body {
+  background: $color-bg;
+  color: $color-text-primary-soft;
+  font-family: $font-primary;
+  -webkit-font-smoothing: antialiased;
+
+  // клас додає бургер-меню на body — раніше не мав стилю
+  &.no-scroll {
+    overflow: hidden;
+  }
+}

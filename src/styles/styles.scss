@@ -1,31 +1,13 @@
 @use "variables" as *;
-
-// ─── Reset ───────────────────────────────────────────────────────
-*,
-*::before,
-*::after {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-}
-
-img {
-  width: 100%;
-  display: block;
-}
-
-html {
-  scroll-behavior: smooth;
-  font-size: 16px;
-  background: #0a0a0a;
-}
-
-body {
-  background: #0a0a0a;
-  color: #f5f5f5;
-  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-  -webkit-font-smoothing: antialiased;
-}
+@use "mixins" as *;
+@use "base";
+@use "hero";
+@use "about";
+@use "approach";
+@use "widget-card";
+@use "team";
+@use "pricing";
+@use "contact";
 
 // ───────────────────────────────────────────────────────
 // Header
@@ -36,16 +18,15 @@ body {
   left: 0;
   width: 100%;
   z-index: 100;
-  background: rgba(10, 10, 10, 0.8);
+  background: rgba($color-bg, 0.8);
   backdrop-filter: blur(8px);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  border-bottom: 1px solid $color-border;
 
   &__inner {
-    max-width: 1200px;
+    max-width: $container-max-width;
     margin: 0 auto;
-    padding: 20px 24px;
-    display: flex;
-    align-items: center;
+    padding: 20px $container-padding;
+    @include flex-center(row);
     justify-content: space-between;
   }
 
@@ -56,24 +37,29 @@ body {
   &__cta--desktop {
     display: inline-flex;
   }
+
+  @include mobile {
+    &__cta--desktop { display: none; }
+    &__burger { display: flex; }
+  }
 }
 
 .logo {
+  @extend %link-reset;
   display: flex;
   align-items: center;
   gap: 8px;
-  text-decoration: none;
-  color: #ffffff;
+  color: $color-text-primary;
 
   &__icon {
     display: flex;
     width: 24px;
     height: 24px;
-    color: #ffffff;
+    color: $color-text-primary;
   }
 
   &__text {
-    font-weight: 700;
+    font-weight: $fw-bold;
     font-size: 20px;
     letter-spacing: 0.02em;
   }
@@ -85,37 +71,63 @@ body {
   gap: 32px;
 
   &__link {
-    color: #9a9a9a;
+    color: $color-text-secondary;
     text-decoration: none;
-    font-size: 15px;
-    font-weight: 400;
-    transition: color 0.2s ease;
+    font-size: $fs-nav;
+    font-weight: $fw-regular;
+    transition: color $transition-base;
 
-    &:hover {
-      color: #ffffff;
-    }
+    &:hover { color: $color-text-primary; }
   }
 
   &__cta--mobile {
     display: none;
   }
+
+  @include mobile {
+    position: fixed;
+    top: 73px;
+    left: 0;
+    width: 100%;
+    height: calc(100vh - 73px);
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0;
+    padding: $container-padding;
+    background: $color-bg;
+    transform: translateX(100%);
+    transition: transform 0.3s ease;
+
+    &--open { transform: translateX(0); }
+
+    &__link {
+      width: 100%;
+      padding: 16px 0;
+      border-bottom: 1px solid $color-border;
+      font-size: 18px;
+    }
+
+    &__cta--mobile {
+      display: block;
+      width: 100%;
+      margin-top: 24px;
+    }
+  }
 }
 
 .btn {
   &--primary {
-    background: #ffffff;
-    color: #0a0a0a;
+    background: $color-btn-bg;
+    color: $color-btn-text;
     padding: 10px 20px;
-    border-radius: 999px;
-    font-weight: 600;
+    border-radius: $radius-pill;
+    font-weight: $fw-semibold;
     font-size: 14px;
     text-decoration: none;
     text-align: center;
-    transition: opacity 0.2s ease;
+    transition: opacity $transition-base;
 
-    &:hover {
-      opacity: 0.85;
-    }
+    &:hover { opacity: 0.85; }
   }
 }
 
@@ -134,1220 +146,16 @@ body {
   &__line {
     width: 100%;
     height: 2px;
-    background: #ffffff;
+    background: $color-text-primary;
     transition: transform 0.25s ease, opacity 0.25s ease;
   }
 
   &--active {
-    .burger__line:nth-child(1) {
-      transform: translateY(7px) rotate(45deg);
-    }
-    .burger__line:nth-child(2) {
-      opacity: 0;
-    }
-    .burger__line:nth-child(3) {
-      transform: translateY(-7px) rotate(-45deg);
-    }
+    .burger__line:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+    .burger__line:nth-child(2) { opacity: 0; }
+    .burger__line:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
   }
 }
-
-// ---- Mobile breakpoint ----
-@media (max-width: 768px) {
-  .header__cta--desktop {
-    display: none;
-  }
-
-  .header__burger {
-    display: flex;
-  }
-
-  .nav {
-    position: fixed;
-    top: 73px;
-    left: 0;
-    width: 100%;
-    height: calc(100vh - 73px);
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 0;
-    padding: 24px;
-    background: #0a0a0a;
-    transform: translateX(100%);
-    transition: transform 0.3s ease;
-
-    &--open {
-      transform: translateX(0);
-    }
-
-    &__link {
-      width: 100%;
-      padding: 16px 0;
-      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-      font-size: 18px;
-    }
-
-    &__cta--mobile {
-      display: block;
-      width: 100%;
-      margin-top: 24px;
-    }
-  }
-}
-
-// ───────────────────────────────────────────────────────
-// HERO
-
-.hero {
-  position: relative;
-  overflow: hidden;
-  padding-top: 160px;
-  padding-bottom: 80px;
-
-  &__bg {
-    position: relative;
-    z-index: 1;
-    margin: 64px auto 0;
-    width: 100%;
-    max-width: 976px;
-    height: 480px;
-    background: linear-gradient(
-      180deg,
-      rgba(255, 255, 255, 0.05) 0%,
-      rgba(10, 10, 10, 0) 100%
-    );
-    border-radius: 24px;
-    overflow: hidden;
-    transition: max-width 0.1s linear;
-
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    @media (max-width: 1000px) {
-      max-width: 100%;
-    }
-
-    @media (max-width: 768px) {
-      height: 360px;
-      margin-top: 40px;
-    }
-  }
-
-  &__container {
-    position: relative;
-    z-index: 2;
-    max-width: 1100px;
-    margin: 0 auto;
-    padding: 0 24px;
-  }
-
-  &__badge {
-    display: inline-block;
-    padding: 6px 14px;
-    margin-bottom: 32px;
-    font-size: 13px;
-    font-weight: 500;
-    color: #f5f5f5;
-    background: #141414;
-    border: 1px solid rgba(255, 255, 255, 0.12);
-    border-radius: 100px;
-  }
-
-  &__title {
-    margin: 0 0 24px;
-    font-size: 64px;
-    font-weight: 800;
-    line-height: 1.1;
-    color: #ffffff;
-    letter-spacing: -0.01em;
-
-    @media (max-width: 768px) {
-      font-size: 40px;
-    }
-  }
-
-  &__text {
-    max-width: 560px;
-    margin: 0;
-    font-size: 17px;
-    font-weight: 400;
-    line-height: 1.6;
-    color: #9a9a9a;
-  }
-
-  &__circles {
-    position: relative;
-    z-index: 1;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-
-  &__circle {
-    position: relative;
-    width: 350px;
-    height: 350px;
-    border: 1px solid rgba(255, 255, 255, 0.15);
-    border-radius: 50%;
-    flex-shrink: 0;
-
-    &--left {
-      margin-right: -90px;
-    }
-
-    &--right {
-      margin-left: -90px;
-    }
-
-    @media (max-width: 768px) {
-      width: 220px;
-      height: 220px;
-
-      &--left {
-        margin-right: -55px;
-      }
-
-      &--right {
-        margin-left: -55px;
-      }
-    }
-  }
-
-  &__circle-dot {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 8px;
-    height: 8px;
-    background: #ffffff;
-    border-radius: 50%;
-    box-shadow: 0 0 8px 2px rgba(255, 255, 255, 0.6);
-    offset-path: circle(175px at 175px 175px);
-    offset-rotate: 0deg;
-
-    &--cw {
-      animation: hero-orbit-cw 10s linear infinite;
-    }
-
-    &--ccw {
-      animation: hero-orbit-ccw 10s linear infinite;
-    }
-
-    @media (max-width: 768px) {
-      offset-path: circle(110px at 110px 110px);
-    }
-  }
-}
-
-@keyframes hero-orbit-cw {
-  from {
-    offset-distance: 0%;
-  }
-  to {
-    offset-distance: 100%;
-  }
-}
-
-@keyframes hero-orbit-ccw {
-  from {
-    offset-distance: 100%;
-  }
-  to {
-    offset-distance: 0%;
-  }
-}
-
-// ───────────────────────────────────────────────────────
-// ABOUT
-
-.about {
-  background-color: #0a0a0a;
-  border-top: 1px solid rgba(255, 255, 255, 0.1);
-
-  &__container {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 64px;
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 96px 32px;
-
-    @media (max-width: 768px) {
-      grid-template-columns: 1fr;
-      gap: 32px;
-      padding: 56px 20px;
-    }
-  }
-
-  &__title {
-    font-size: 40px;
-    font-weight: 800;
-    line-height: 1.15;
-    color: #ffffff;
-    margin: 0 0 24px;
-  }
-
-  &__founders {
-    display: flex;
-  }
-
-  &__avatar {
-    width: 44px;
-    height: 44px;
-    border-radius: 50%;
-    object-fit: cover;
-    border: 2px solid #0a0a0a;
-
-    &:not(:first-child) {
-      margin-left: -12px;
-    }
-  }
-
-  &__lead {
-    font-size: 18px;
-    font-weight: 700;
-    color: #ffffff;
-    margin: 0 0 20px;
-    line-height: 1.4;
-  }
-
-  &__text {
-    font-size: 15px;
-    font-weight: 400;
-    color: #9a9a9a;
-    line-height: 1.6;
-    margin: 0 0 16px;
-
-    &:last-child {
-      margin-bottom: 0;
-    }
-  }
-
-  &__grid {
-    max-width: 1300px;
-    width: 100%;
-    margin: 0 auto;
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    border-top: 1px solid rgba(255, 255, 255, 0.1);
-
-    @media (max-width: 768px) {
-      grid-template-columns: repeat(2, 1fr);
-    }
-  }
-
-  &__grid-item {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 10px;
-    padding: 40px 24px;
-    border-right: 1px solid rgba(255, 255, 255, 0.1);
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-    color: #9a9a9a;
-    transition: color 0.2s ease, background-color 0.2s ease;
-
-    &:nth-child(3n) {
-      border-right: none;
-    }
-
-    @media (max-width: 768px) {
-      &:nth-child(3n) {
-        border-right: 1px solid rgba(255, 255, 255, 0.1);
-      }
-
-      &:nth-child(2n) {
-        border-right: none;
-      }
-    }
-
-    &:hover {
-      color: #ffffff;
-      background-color: rgba(255, 255, 255, 0.03);
-    }
-  }
-
-  &__icon {
-    width: 20px;
-    height: 20px;
-    color: inherit;
-  }
-
-  &__label {
-    font-size: 15px;
-    font-weight: 500;
-  }
-
-  &__divider{
-    margin: 40px 0;
-    color: #9a9a9a;
-    border: none;
-    border-top: 1px solid rgba(255, 255, 255, 0.1);
-  }
-}
-
-
-.approach {
-  padding: 120px 0;
-  background-color: $color-bg;
-
-  &__container {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 0 24px;
-    display: flex;
-    flex-direction: column;
-    gap: 160px;
-  }
-
-  &__item {
-    display: flex;
-    align-items: center;
-    gap: 80px;
-
-    &--reverse {
-      flex-direction: row-reverse;
-    }
-
-    @media (max-width: 1000px) {
-      flex-direction: column;
-      gap: 40px;
-
-      &--reverse {
-        flex-direction: column;
-      }
-    }
-  }
-
-  &__content {
-    flex: 1 1 40%;
-    min-width: 0;
-  }
-
-  &__eyebrow {
-    display: block;
-    font-size: 13px;
-    font-weight: 600;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    color: $color-text-secondary;
-    margin-bottom: 16px;
-  }
-
-  &__title {
-    font-size: 36px;
-    font-weight: 800;
-    line-height: 1.15;
-    color: $color-text-primary;
-    margin-bottom: 20px;
-  }
-
-  &__text {
-    font-size: 16px;
-    line-height: 1.6;
-    color: $color-text-secondary;
-    max-width: 440px;
-  }
-
-  &__visual {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    // Піднімаємося на один рівень вгору з папки styles, а потім заходимо в assets
-    background-image: url('../assets/floral.jpg'); 
-    position: relative;
-    flex: 1 1 55%;
-    width: 100%;
-    max-width: 450px;
-    aspect-ratio: 4 / 3;
-    border-radius: 20px;
-    overflow: hidden;
-    background-size: cover; // Рекомендую додати, щоб фон коректно масштабувався
-    background-position: center;
-  }
-
-  &__image {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    display: block;
-  }
-}
-
-.widget-card {
-  width: 260px;
-  padding: 20px;
-  border-radius: 14px;
-  background-color: rgba($color-bg-elevated, 0.9);
-  backdrop-filter: blur(12px);
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
-
-  &__header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin-bottom: 14px;
-  }
-
-  &__title {
-    font-size: 14px;
-    font-weight: 700;
-    color: $color-text-primary;
-  }
-
-  &__subtitle {
-    display: block;
-    font-size: 12px;
-    color: $color-text-secondary;
-  }
-
-  &__badge {
-    font-size: 11px;
-    font-weight: 600;
-    padding: 3px 8px;
-    border-radius: 20px;
-
-    &--live {
-      color: $color-text-secondary;
-    }
-
-    &--healthy {
-      color: $color-accent-green;
-      background-color: rgba($color-accent-green, 0.15);
-    }
-
-    &--negative {
-      color: $color-accent-green;
-      font-size: 13px;
-      margin-left: 8px;
-    }
-  }
-
-  // --- список активності ---
-  &__list {
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-  }
-
-  &__list-item {
-    display: grid;
-    grid-template-columns: 8px 1fr;
-    column-gap: 8px;
-    row-gap: 2px;
-  }
-
-  &__list-text {
-    font-size: 12px;
-    color: $color-text-primary;
-    line-height: 1.3;
-  }
-
-  &__list-time {
-    grid-column: 2;
-    font-size: 11px;
-    color: $color-text-secondary;
-  }
-
-  &__dot {
-    width: 8px;
-    height: 8px;
-    border-radius: 50%;
-    margin-top: 4px;
-
-    &--green  { background-color: $color-accent-green; }
-    &--blue   { background-color: #60a5fa; }
-    &--yellow { background-color: $color-accent-yellow; }
-    &--purple { background-color: #a78bfa; }
-  }
-
-  // --- велика цифра (uptime / spend) ---
-  &__stat {
-    display: flex;
-    align-items: baseline;
-    font-size: 30px;
-    font-weight: 800;
-    color: $color-text-primary;
-    margin-bottom: 4px;
-  }
-
-  &__stat-unit {
-    font-size: 16px;
-    font-weight: 600;
-    margin-left: 2px;
-    color: $color-text-secondary;
-  }
-
-  // --- бар-чарт uptime ---
-  &__bars {
-    display: flex;
-    gap: 4px;
-    margin: 16px 0;
-  }
-
-  &__bar {
-    flex: 1;
-    height: 20px;
-    border-radius: 3px;
-    background-color: $color-accent-green;
-
-    &--warning {
-      background-color: $color-accent-yellow;
-    }
-  }
-
-  &__metrics {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 8px;
-  }
-
-  &__metric {
-    padding: 10px 8px;
-    border-radius: 8px;
-    background-color: rgba(255, 255, 255, 0.05);
-    text-align: center;
-  }
-
-  &__metric-value {
-    display: block;
-    font-size: 14px;
-    font-weight: 700;
-    color: $color-text-primary;
-  }
-
-  &__metric-label {
-    display: block;
-    font-size: 10px;
-    color: $color-text-secondary;
-    margin-top: 2px;
-  }
-
-  // --- monthly spend ---
-  &__progress {
-    height: 6px;
-    border-radius: 4px;
-    background-color: rgba(255, 255, 255, 0.1);
-    margin: 14px 0 16px;
-    overflow: hidden;
-  }
-
-  &__progress-fill {
-    display: block;
-    height: 100%;
-    background-color: $color-text-primary;
-    border-radius: 4px;
-  }
-
-  &__categories {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-  }
-
-  &__category {
-    display: flex;
-    align-items: center;
-    font-size: 12px;
-  }
-
-  &__category-dot {
-    width: 6px;
-    height: 6px;
-    border-radius: 50%;
-    background-color: rgba(255, 255, 255, 0.4);
-    margin-right: 8px;
-  }
-
-  &__category-name {
-    flex: 1;
-    color: $color-text-secondary;
-  }
-
-  &__category-value {
-    font-weight: 600;
-    color: $color-text-primary;
-  }
-}
-
-
-// ───────────────────────────────────────────────────────
-// TEAM
-
-.team {
-  position: relative;
-  overflow: hidden;
-  padding: 120px 0;
-  min-height: 600px;
-
-  // ─── фонова картинка — теж розширюється при скролі ───
-  &__bg {
-    position: absolute;
-    inset: 0;               // top/right/bottom/left: 0 — одним рядком
-    margin: 0 auto;
-    width: 100%;
-    max-width: 976px;       // стартова ширина, JS розтягне до 100% екрана
-    height: 100%;
-    background-image: url('../assets/floral.jpg');
-    background-size: cover;
-    background-position: center;
-    border-radius: 24px;
-    transition: max-width 0.1s linear;
-
-    // затемнення зверху зображення, щоб текст читався
-    &::after {
-      content: '';
-      position: absolute;
-      inset: 0;
-      background: linear-gradient(
-        135deg,
-        rgba(10, 10, 10, 0.65) 0%,
-        rgba(10, 10, 10, 0.25) 60%,
-        rgba(10, 10, 10, 0.1) 100%
-      );
-      border-radius: inherit;
-    }
-
-    @media (max-width: $bp-tablet) {
-      max-width: 100%;
-      border-radius: 0;
-    }
-  }
-
-  // ─── контейнер поверх фону ───
-  &__container {
-    position: relative;
-    z-index: 2;             // вище за __bg та його ::after
-    max-width: 1000px;
-    margin: 0 auto;
-    padding: 0 $container-padding;
-    display: grid;
-    grid-template-columns: 1fr 1.5fr;
-    align-items: center;
-    gap: 80px;
-
-    @media (max-width: $bp-mobile) {
-      grid-template-columns: 1fr;
-      gap: 48px;
-    }
-  }
-
-  // ─── лівий блок: заголовок + підпис ───
-  &__intro {
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
-  }
-
-  &__title {
-    font-size: 40px;
-    font-weight: $fw-extrabold;
-    line-height: $line-height-heading;
-    color: $color-text-primary;
-
-    @media (max-width: $bp-mobile) {
-      font-size: 32px;
-    }
-  }
-
-  &__text {
-    font-size: $fs-body;
-    font-weight: $fw-regular;
-    line-height: $line-height-body;
-    color: rgba(255, 255, 255, 0.7);
-    max-width: 340px;
-  }
-
-  // ─── правий блок: дві картки засновниць ───
-  &__cards {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 20px;
-    align-items: start;
-
-    @media (max-width: $bp-mobile) {
-      grid-template-columns: 1fr;
-    }
-  }
-
-  &__card {
-    background: $color-bg-card;
-    border: 1px solid $color-border-strong;
-    border-radius: 20px;
-    overflow: hidden;
-  }
-
-  &__card-photo {
-    width: 100%;
-    aspect-ratio: 3 / 4;
-    object-fit: cover;
-    object-position: top;
-    display: block;
-  }
-
-  &__card-body {
-    padding: 20px;
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-  }
-
-  &__card-name {
-    font-size: 16px;
-    font-weight: $fw-bold;
-    color: $color-text-primary;
-    line-height: 1.2;
-  }
-
-  &__card-role {
-    font-size: 13px;
-    font-weight: $fw-regular;
-    color: $color-text-secondary;
-  }
-
-  &__card-bio {
-    font-size: 13px;
-    font-weight: $fw-regular;
-    line-height: 1.55;
-    color: $color-text-secondary;
-    margin-top: 4px;
-  }
-
-  &__card-link {
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-    margin-top: 8px;
-    font-size: 13px;
-    font-weight: $fw-medium;
-    color: $color-text-secondary;
-    text-decoration: none;
-    transition: color $transition-base;
-
-    &:hover {
-      color: $color-text-primary;
-    }
-  }
-
-  &__card-link-icon {
-    width: 16px;
-    height: 16px;
-    flex-shrink: 0;
-  }
-}
-
-.our-story {
-  padding: 120px 0;
-
-  &__container {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 80px;
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 0 40px;
-  }
-
-  // --- ліва колонка ---
-  &__intro {
-    position: sticky;
-    top: 120px; // ⚠️ підстав реальну висоту хедера + відступ
-    align-self: start;
-  }
-
-  &__badge {
-    display: inline-block;
-    padding: 6px 14px;
-    margin-bottom: 24px;
-    border: 1px solid rgba(255, 255, 255, 0.15);
-    border-radius: 999px;
-    font-size: 13px;
-    color: #9a9a9a;
-  }
-
-  &__title {
-    margin-bottom: 20px;
-    font-size: 40px;
-    font-weight: 800;
-    line-height: 1.15;
-    color: #ffffff;
-  }
-
-  &__description {
-    max-width: 380px;
-    color: #9a9a9a;
-    font-size: 16px;
-    line-height: 1.6;
-  }
-
-  // --- права колонка (таймлайн) ---
-  // grid з 2 колонок: 1-ша — точка (24px), 2-га — картка (решта простору).
-  // кожен запис таймлайну — це пара елементів (dot-wrap + item) підряд у розмітці,
-  // grid сам розкладає їх по одному рядку.
-  &__timeline {
-    position: relative;
-    display: grid;
-    grid-template-columns: 24px 1fr; // ⚠️ підлаштуй ширину точкової колонки під свій дизайн
-    column-gap: 20px;
-    row-gap: 16px;
-
-    // суцільна вертикальна лінія позаду точок (замість "нарізаної" лінії в кожній картці)
-    &::before {
-      content: "";
-      position: absolute;
-      top: 9px;    // приблизно половина висоти точки — щоб лінія починалась від її центру
-      bottom: 9px;
-      left: 11px;  // центр 24px-колонки (24px / 2 - ширина лінії / 2)
-      width: 1px;
-      background: rgba(255, 255, 255, 0.15);
-    }
-  }
-
-  // колонка 1: обгортка точки
-  &__dot-wrap {
-    position: relative;
-    z-index: 1; // щоб точка перекривала лінію під собою
-    display: flex;
-    justify-content: center;
-    padding-top: 4px;
-  }
-
-  &__dot {
-    width: 10px;
-    height: 10px;
-    border-radius: 50%;
-    background: transparent;
-    border: 2px solid rgba(255, 255, 255, 0.3);
-    transition: background 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
-
-    &--active {
-      background: #ffffff;
-      border-color: #ffffff;
-      box-shadow: 0 0 0 6px rgba(255, 255, 255, 0.12);
-    }
-  }
-
-  // колонка 2: картка
-  &__item {
-    padding: 20px 24px;
-    background: #141414;
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    border-radius: 12px;
-    box-shadow: 0 4px 20px rgb(135 39 39 / 66%);
-    transition: border-color 0.25s ease, box-shadow 0.25s ease;
-    cursor: pointer;
-
-    &:hover {
-      border-color: rgba(255, 255, 255, 0.25);
-      box-shadow: 0 12px 32px rgba(0, 0, 0, 0.4);
-    }
-  }
-
-  &__year {
-    display: block;
-    margin-bottom: 8px;
-    font-size: 13px;
-    color: #9a9a9a;
-  }
-
-  &__item-title {
-    margin-bottom: 8px;
-    font-size: 18px;
-    font-weight: 700;
-    color: #ffffff;
-  }
-
-  &__item-text {
-    font-size: 14px;
-    line-height: 1.6;
-    color: #9a9a9a;
-  }
-}
-
-
-
-
-
-// ───────────────────────────────────────────────────────
-// PRICING
-
-.pricing {
-  position: relative;
-  overflow: hidden;
-  padding: 120px 0;
-  min-height: 700px;
-
-  &__bg {
-    position: absolute;
-    inset: 0;
-    margin: 0 auto;
-    width: 100%;
-    max-width: 976px; // стартова ширина, як у .hero__bg / .team__bg
-    height: 100%;
-    background-image: url('../assets/floral.jpg');
-    background-size: cover;
-    background-position: center;
-    border-radius: 24px;
-    transition: max-width 0.1s linear;
-
-    &::after {
-      content: '';
-      position: absolute;
-      inset: 0;
-      background: linear-gradient(
-        180deg,
-        rgba(10, 10, 10, 0.7) 0%,
-        rgba(10, 10, 10, 0.45) 45%,
-        rgba(10, 10, 10, 0.75) 100%
-      );
-      border-radius: inherit;
-    }
-
-    @media (max-width: $bp-tablet) {
-      max-width: 100%;
-      border-radius: 0;
-    }
-  }
-
-  &__container {
-    position: relative;
-    z-index: 2;
-    max-width: 1000px;
-    margin: 0 auto;
-    padding: 0 $container-padding;
-    display: grid;
-    grid-template-columns: 1fr 1.4fr;
-    align-items: center;
-    gap: 60px;
-
-    @media (max-width: $bp-mobile) {
-      grid-template-columns: 1fr;
-      gap: 40px;
-    }
-  }
-
-  &__intro {
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
-  }
-
-  &__title {
-    font-size: $fs-h2;
-    font-weight: $fw-extrabold;
-    line-height: $line-height-heading;
-    color: $color-text-primary;
-
-    @media (max-width: $bp-mobile) {
-      font-size: 32px;
-    }
-  }
-
-  &__text {
-    font-size: $fs-body;
-    color: rgba(255, 255, 255, 0.7);
-    line-height: $line-height-body;
-    max-width: 320px;
-  }
-
-  &__cards {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 20px;
-    align-items: start;
-
-    @media (max-width: $bp-mobile) {
-      grid-template-columns: 1fr;
-    }
-  }
-
-  &__card {
-    background: rgba(10, 10, 10, 0.85);
-    backdrop-filter: blur(12px);
-    border: 1px solid $color-border-strong;
-    border-radius: 20px;
-    padding: 28px;
-    display: flex;
-    flex-direction: column;
-  }
-
-  &__card-eyebrow {
-    font-size: 12px;
-    font-weight: $fw-bold;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    color: $color-text-secondary;
-    margin-bottom: 16px;
-  }
-
-  &__card-price {
-    font-size: 34px;
-    font-weight: $fw-extrabold;
-    color: $color-text-primary;
-    margin-bottom: 12px;
-    line-height: 1.1;
-  }
-
-  &__card-unit {
-    font-size: 15px;
-    font-weight: $fw-medium;
-    color: $color-text-secondary;
-    margin-left: 4px;
-  }
-
-  &__card-text {
-    font-size: 14px;
-    line-height: $line-height-body;
-    color: $color-text-secondary;
-    margin-bottom: 20px;
-  }
-
-  &__card-divider {
-    border: none;
-    border-top: 1px solid $color-border;
-    margin-bottom: 20px;
-  }
-
-  &__card-list {
-    display: flex;
-    flex-direction: column;
-    gap: 14px;
-    list-style: none;
-    margin-bottom: 24px;
-    flex: 1;
-  }
-
-  &__card-list-item {
-    display: flex;
-    align-items: flex-start;
-    gap: 10px;
-    font-size: 13px;
-    line-height: 1.4;
-    color: rgba(255, 255, 255, 0.85);
-  }
-
-  &__check {
-    width: 16px;
-    height: 16px;
-    flex-shrink: 0;
-    margin-top: 1px;
-    color: $color-accent-green;
-  }
-
-  &__card-btn {
-    width: 100%;
-  }
-}
-
-// ───────────────────────────────────────────────────────
-// CONTACT
-
-.contact {
-  padding: 120px 0;
-
-  &__container {
-    max-width: 700px;
-    margin: 0 auto;
-    padding: 0 $container-padding;
-  }
-
-  &__card {
-    background: $color-bg-card;
-    border: 1px solid $color-border;
-    border-radius: $radius-card;
-    padding: 56px 48px;
-    text-align: center;
-
-    @media (max-width: $bp-mobile) {
-      padding: 40px 24px;
-    }
-  }
-
-  &__title {
-    font-size: $fs-h2;
-    font-weight: $fw-extrabold;
-    line-height: $line-height-heading;
-    color: $color-text-primary;
-    margin-bottom: 16px;
-  }
-
-  &__text {
-    font-size: $fs-body;
-    color: $color-text-secondary;
-    line-height: $line-height-body;
-    max-width: 460px;
-    margin: 0 auto 40px;
-  }
-
-  &__form {
-    display: flex;
-    flex-direction: column;
-    gap: 24px;
-    text-align: left;
-  }
-
-  &__row {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 20px;
-
-    @media (max-width: $bp-mobile) {
-      grid-template-columns: 1fr;
-      gap: 24px;
-    }
-  }
-
-  &__field {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-  }
-
-  &__label {
-    font-size: 13px;
-    font-weight: $fw-semibold;
-    color: $color-text-primary;
-  }
-
-  &__input,
-  &__textarea {
-    width: 100%;
-    background: transparent;
-    border: 1px solid $color-border-strong;
-    border-radius: 10px;
-    padding: 12px 14px;
-    font-family: $font-primary;
-    font-size: 14px;
-    color: $color-text-primary;
-    transition: border-color $transition-base;
-
-    &::placeholder {
-      color: $color-text-muted;
-    }
-
-    &:focus {
-      outline: none;
-      border-color: rgba(255, 255, 255, 0.4);
-    }
-  }
-
-  &__textarea {
-    resize: vertical;
-    min-height: 120px;
-    line-height: $line-height-body;
-  }
-
-  &__submit {
-    align-self: center;
-    margin-top: 8px;
-    padding: 12px 32px;
-    border: none;
-    cursor: pointer;
-    font-family: $font-primary;
-  }
-}
-
 
 // ───────────────────────────────────────────────────────
 // FOOTER
@@ -1369,16 +177,14 @@ body {
     gap: 40px;
     margin-bottom: 40px;
 
-    @media (max-width: $bp-tablet) {
+    @include tablet {
       flex-direction: column;
       gap: 32px;
     }
   }
 
   &__brand {
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
+    @include flex-col(12px);
     max-width: 280px;
   }
 
@@ -1393,9 +199,7 @@ body {
     gap: 32px;
     padding-top: 6px;
 
-    @media (max-width: $bp-tablet) {
-      padding-top: 0;
-    }
+    @include tablet { padding-top: 0; }
   }
 
   &__link {
@@ -1404,20 +208,12 @@ body {
     text-decoration: none;
     transition: color $transition-base;
 
-    &:hover {
-      color: $color-text-primary;
-    }
+    &:hover { color: $color-text-primary; }
   }
 
   &__connect {
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
+    @include flex-col(12px);
     align-items: flex-start;
-
-    @media (max-width: $bp-tablet) {
-      align-items: flex-start;
-    }
   }
 
   &__connect-title {
@@ -1432,9 +228,7 @@ body {
   }
 
   &__social {
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    @include flex-center;
     width: 36px;
     height: 36px;
     border-radius: 50%;
